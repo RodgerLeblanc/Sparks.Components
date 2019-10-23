@@ -28,7 +28,7 @@ namespace Sparks.Components.Blazor.Tests.Components.Modal.Services
             Mock<ComponentBase> mockComponent = new Mock<ComponentBase>();
             ModalService service = new ModalService();
             bool eventCalled = false;
-            service.OnShow += (title, renderFragment) => eventCalled = true;
+            service.Shown += (title, renderFragment) => eventCalled = true;
 
             service.Show("Test", mockComponent.Object.GetType());
 
@@ -41,7 +41,7 @@ namespace Sparks.Components.Blazor.Tests.Components.Modal.Services
             Mock<ComponentBase> mockComponent = new Mock<ComponentBase>();
             ModalService service = new ModalService();
             string modalTitle = null;
-            service.OnShow += (title, renderFragment) => modalTitle = title;
+            service.Shown += (title, renderFragment) => modalTitle = title;
 
             service.Show("Test", mockComponent.Object.GetType());
 
@@ -54,7 +54,7 @@ namespace Sparks.Components.Blazor.Tests.Components.Modal.Services
             Mock<ComponentBase> mockComponent = new Mock<ComponentBase>();
             ModalService service = new ModalService();
             RenderFragment modalRenderFragment = null;
-            service.OnShow += (title, renderFragment) => modalRenderFragment = renderFragment;
+            service.Shown += (title, renderFragment) => modalRenderFragment = renderFragment;
 
             service.Show("Test", mockComponent.Object.GetType());
 
@@ -62,13 +62,13 @@ namespace Sparks.Components.Blazor.Tests.Components.Modal.Services
         }
 
         [Fact]
-        public void Hide_ComponentBase_ShouldHideModal()
+        public void Close_ComponentBase_ShouldCloseModal()
         {
             ModalService service = new ModalService();
             bool eventCalled = false;
-            service.OnHide += (result) => eventCalled = true;
+            service.Closed += (result) => eventCalled = true;
 
-            service.Hide();
+            service.Close();
 
             eventCalled.Should().BeTrue();
         }

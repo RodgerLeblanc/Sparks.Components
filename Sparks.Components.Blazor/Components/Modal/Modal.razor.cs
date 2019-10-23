@@ -35,8 +35,8 @@ namespace Sparks.Components.Blazor
         /// </summary>
         protected override void OnInitialized()
         {
-            ModalService.OnShow += ShowModal;
-            ModalService.OnHide += HideModal;
+            ModalService.Shown += ShowModal;
+            ModalService.Closed += CloseModal;
         }
 
         /// <summary>
@@ -55,14 +55,14 @@ namespace Sparks.Components.Blazor
 
         protected void CancelModal()
         {
-            HideModal(ModalResult.Cancel);
+            CloseModal(ModalResult.Cancel);
         }
 
         /// <summary>
-        /// Hides the modal.
+        /// Closes the modal.
         /// </summary>
         /// <param name="result"></param>
-        public void HideModal(ModalResult result)
+        public void CloseModal(ModalResult result)
         {
             IsVisible = false;
             Title = "";
@@ -94,8 +94,8 @@ namespace Sparks.Components.Blazor
 
             if (disposing)
             {
-                ModalService.OnShow -= ShowModal;
-                ModalService.OnHide -= HideModal;
+                ModalService.Shown -= ShowModal;
+                ModalService.Closed -= CloseModal;
             }
 
             _disposed = true;
