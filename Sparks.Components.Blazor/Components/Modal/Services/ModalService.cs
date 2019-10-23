@@ -66,7 +66,7 @@ namespace Sparks.Components.Blazor.Services
                 throw new ArgumentException($"{componentType.FullName} must be a Blazor Component");
             }
 
-            var content = new RenderFragment(x => { x.OpenComponent(1, componentType); x.CloseComponent(); });
+            RenderFragment content = new RenderFragment(x => { x.OpenComponent(1, componentType); x.CloseComponent(); });
 
             Shown?.Invoke(title, content, parameters, options);
         }

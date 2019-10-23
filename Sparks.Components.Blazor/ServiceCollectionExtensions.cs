@@ -9,13 +9,13 @@ namespace Sparks.Components.Blazor
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// Adds the <see cref="ModalService"/>.
+        /// Registers the <see cref="ModalService"/>.
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
         public static IServiceCollection AddBlazorModal(this IServiceCollection services)
         {
-            return services.AddScoped<ModalService>();
+            return services.AddScoped<IModalService, ModalService>();
         }
     }
 }
