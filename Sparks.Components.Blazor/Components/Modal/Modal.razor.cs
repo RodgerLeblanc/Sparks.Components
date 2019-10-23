@@ -53,10 +53,16 @@ namespace Sparks.Components.Blazor
             StateHasChanged();
         }
 
+        protected void CancelModal()
+        {
+            HideModal(ModalResult.Cancel);
+        }
+
         /// <summary>
         /// Hides the modal.
         /// </summary>
-        public void HideModal()
+        /// <param name="result"></param>
+        public void HideModal(ModalResult result)
         {
             IsVisible = false;
             Title = "";

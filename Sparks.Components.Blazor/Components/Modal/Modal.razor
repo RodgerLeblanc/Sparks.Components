@@ -3,12 +3,12 @@
 
 <div class="bm-container @(IsVisible ? "bm-active" : string.Empty)">
 
-    <div class="bm-overlay" @onclick="HideModal"></div>
+    <div class="bm-overlay" @onclick="CancelModal"></div>
 
     <div class="blazor-modal">
         <div class="bm-header">
             <h3 class="bm-title">@Title @IsVisible</h3>
-            <button type="button" class="bm-close" @onclick="HideModal">
+            <button type="button" class="bm-close" @onclick="CancelModal">
                 <span>&times;</span>
             </button>
         </div>
