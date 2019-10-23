@@ -4,19 +4,19 @@ using System;
 namespace Sparks.Components.Blazor.Services
 {
     /// <summary>
-    /// The service that is used to show or hide modal.
+    /// The service that is used to show or close modal.
     /// </summary>
     public class ModalService : IModalService
     {
         /// <summary>
         /// Custom event fired when the modal is shown.
         /// </summary>
-        public event Action<string, RenderFragment> OnShow;
+        public event Action<string, RenderFragment> Shown;
 
         /// <summary>
-        /// Custom event fired when the modal is hidden.
+        /// Custom event fired when the modal is closed.
         /// </summary>
-        public event Action<ModalResult> OnHide;
+        public event Action<ModalResult> Closed;
 
         /// <summary>
         /// Shows the modal.
@@ -32,15 +32,15 @@ namespace Sparks.Components.Blazor.Services
 
             RenderFragment content = new RenderFragment(x => { x.OpenComponent(1, contentType); x.CloseComponent(); });
 
-            OnShow?.Invoke(title, content);
+            Shown?.Invoke(title, content);
         }
 
         /// <summary>
-        /// Hides the modal.
+        /// Closes the modal.
         /// </summary>
-        public void Hide()
+        public void Close()
         {
-            OnHide?.Invoke(ModalResult.Ok);
+            Closed?.Invoke(ModalResult.Ok);
         }
     }
 }
