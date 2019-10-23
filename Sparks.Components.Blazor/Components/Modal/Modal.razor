@@ -1,0 +1,20 @@
+﻿@namespace Sparks.Components.Blazor
+@inherits Sparks.Components.Blazor.ModalBase
+
+<div class="bm-container @(IsVisible ? "bm-active" : string.Empty)">
+
+    <div class="bm-overlay" @onclick="HideModal"></div>
+
+    <div class="blazor-modal">
+        <div class="bm-header">
+            <h3 class="bm-title">@Title @IsVisible</h3>
+            <button type="button" class="bm-close" @onclick="HideModal">
+                <span>&times;</span>
+            </button>
+        </div>
+        <div class="bm-content">
+            @Content
+        </div>
+    </div>
+
+</div>
