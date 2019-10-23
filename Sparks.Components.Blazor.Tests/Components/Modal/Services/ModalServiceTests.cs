@@ -66,7 +66,7 @@ namespace Sparks.Components.Blazor.Tests.Components.Modal.Services
         {
             ModalService service = new ModalService();
             bool eventCalled = false;
-            service.OnHide += () => eventCalled = true;
+            service.OnHide += (result) => eventCalled = true;
 
             service.Hide();
 

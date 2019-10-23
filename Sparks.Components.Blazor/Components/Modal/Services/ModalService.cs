@@ -16,7 +16,7 @@ namespace Sparks.Components.Blazor.Services
         /// <summary>
         /// Custom event fired when the modal is hidden.
         /// </summary>
-        public event Action OnHide;
+        public event Action<ModalResult> OnHide;
 
         /// <summary>
         /// Shows the modal.
@@ -40,7 +40,7 @@ namespace Sparks.Components.Blazor.Services
         /// </summary>
         public void Hide()
         {
-            OnHide?.Invoke();
+            OnHide?.Invoke(ModalResult.Ok);
         }
     }
 }
