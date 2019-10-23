@@ -1,18 +1,62 @@
-﻿namespace Sparks.Components.Blazor.Services
+﻿using System;
+
+namespace Sparks.Components.Blazor.Services
 {
     /// <summary>
     /// Modal result.
     /// </summary>
-    public enum ModalResult
+    public class ModalResult
     {
         /// <summary>
-        /// The modal was closed using an OK result.
+        /// Constructs a success modal result.
         /// </summary>
-        Ok,
+        /// <typeparam name="T"></typeparam>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static ModalResult Ok() => new ModalResult(default, typeof(object), false);
 
         /// <summary>
-        /// The modal was cancelled.
+        /// Constructs a success modal result.
         /// </summary>
-        Cancel
+        /// <typeparam name="T"></typeparam>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static ModalResult Ok<T>(T result) => new ModalResult(result, typeof(T), false);
+
+        /// <summary>
+        /// Constructs a cancelled modal result.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static ModalResult Cancel() => new ModalResult(default, typeof(object), true);
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="resultType"></param>
+        /// <param name="cancelled"></param>
+        protected ModalResult(object data, Type resultType, bool cancelled)
+        {
+            Data = data;
+            DataType = resultType;
+            Cancelled = cancelled;
+        }
+
+        /// <summary>
+        /// Gets the modal result data.
+        /// </summary>
+        public object Data { get; }
+
+        /// <summary>
+        /// Gets the modal result data type.
+        /// </summary>
+        public Type DataType { get; }
+
+        /// <summary>
+        /// Gets wether the modal result was cancelled.
+        /// </summary>
+        public bool Cancelled { get; }
     }
 }

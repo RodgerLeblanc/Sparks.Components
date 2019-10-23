@@ -6,69 +6,82 @@ namespace Sparks.Components.Blazor
 {
     /// <summary>
     /// Code behind for the Modal.
-    /// https://www.telerik.com/blogs/creating-a-reusable-javascript-free-blazor-modal
+    /// Starting point : https://github.com/Blazored/Modal
     /// </summary>
     public class ModalBase : ComponentBase, IDisposable
     {
-        /// <summary>
-        /// Gets or sets the <see cref="IModalService"/>. This property is injected.
-        /// </summary>
-        [Inject] private IModalService ModalService { get; set; }
+        const string DefaultStyle = "blazored-modal";
+        const string DefaultPosition = "blazored-modal-center";
 
-        /// <summary>
-        /// Gets or sets whether the modal is visible.
-        /// </summary>
+        [Inject] protected IModalService ModalService { get; set; }
+
+        [Parameter] public bool HideCloseButton { get; set; }
+        [Parameter] public bool DisableBackgroundCancel { get; set; }
+        [Parameter] public string Position { get; set; }
+        [Parameter] public string Style { get; set; }
+
+        protected bool ComponentDisableBackgroundCancel { get; set; }
+        protected bool ComponentHideCloseButton { get; set; }
+        protected string ComponentPosition { get; set; }
+        protected string ComponentStyle { get; set; }
+        protected ModalOptions Options { get; set; }
         protected bool IsVisible { get; set; }
-
-        /// <summary>
-        /// Gets or sets the modal title.
-        /// </summary>
         protected string Title { get; set; }
-
-        /// <summary>
-        /// Gets or sets the modal content.
-        /// </summary>
         protected RenderFragment Content { get; set; }
+        protected ModalParameters Parameters { get; set; }
 
-        /// <summary>
-        /// Connects to events on initialization.
-        /// </summary>
         protected override void OnInitialized()
         {
-            ModalService.Shown += ShowModal;
-            ModalService.Closed += CloseModal;
+            ((ModalService)ModalService).Shown += OnShown;
+            ModalService.Closed += OnClosed;
         }
 
-        /// <summary>
-        /// Shows the modal.
-        /// </summary>
-        /// <param name="title"></param>
-        /// <param name="content"></param>
-        public void ShowModal(string title, RenderFragment content)
+        public void OnShown(string title, RenderFragment content, ModalParameters parameters, ModalOptions options)
         {
             Title = title;
             Content = content;
-            IsVisible = true;
+            Parameters = parameters;
 
+            SetModalOptions(options);
+
+            IsVisible = true;
             StateHasChanged();
         }
 
-        protected void CancelModal()
-        {
-            CloseModal(ModalResult.Cancel);
-        }
-
-        /// <summary>
-        /// Closes the modal.
-        /// </summary>
-        /// <param name="result"></param>
-        public void CloseModal(ModalResult result)
+        internal void OnClosed(ModalResult modalResult)
         {
             IsVisible = false;
             Title = "";
             Content = null;
+            ComponentStyle = "";
 
             StateHasChanged();
+        }
+
+        protected void HandleBackgroundClick()
+        {
+            if (ComponentDisableBackgroundCancel) return;
+
+            ModalService.Cancel();
+        }
+
+        private void SetModalOptions(ModalOptions options)
+        {
+            ComponentHideCloseButton = HideCloseButton;
+            if (options.HideCloseButton.HasValue)
+                ComponentHideCloseButton = options.HideCloseButton.Value;
+
+            ComponentDisableBackgroundCancel = DisableBackgroundCancel;
+            if (options.DisableBackgroundCancel.HasValue)
+                ComponentDisableBackgroundCancel = options.DisableBackgroundCancel.Value;
+
+            ComponentPosition = string.IsNullOrWhiteSpace(options.Position) ? Position : options.Position;
+            if (string.IsNullOrWhiteSpace(ComponentPosition))
+                ComponentPosition = DefaultPosition;
+
+            ComponentStyle = string.IsNullOrWhiteSpace(options.Style) ? Style : options.Style;
+            if (string.IsNullOrWhiteSpace(ComponentStyle))
+                ComponentStyle = DefaultStyle;
         }
 
         #region IDisposable implementation
@@ -94,8 +107,8 @@ namespace Sparks.Components.Blazor
 
             if (disposing)
             {
-                ModalService.Shown -= ShowModal;
-                ModalService.Closed -= CloseModal;
+                ((ModalService)ModalService).Shown -= OnShown;
+                ModalService.Closed -= OnClosed;
             }
 
             _disposed = true;

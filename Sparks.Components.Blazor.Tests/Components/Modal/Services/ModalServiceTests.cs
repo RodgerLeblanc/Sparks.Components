@@ -28,7 +28,7 @@ namespace Sparks.Components.Blazor.Tests.Components.Modal.Services
             Mock<ComponentBase> mockComponent = new Mock<ComponentBase>();
             ModalService service = new ModalService();
             bool eventCalled = false;
-            service.Shown += (title, renderFragment) => eventCalled = true;
+            service.Shown += (title, renderFragment, _, __) => eventCalled = true;
 
             service.Show("Test", mockComponent.Object.GetType());
 
@@ -41,7 +41,7 @@ namespace Sparks.Components.Blazor.Tests.Components.Modal.Services
             Mock<ComponentBase> mockComponent = new Mock<ComponentBase>();
             ModalService service = new ModalService();
             string modalTitle = null;
-            service.Shown += (title, renderFragment) => modalTitle = title;
+            service.Shown += (title, renderFragment, _, __) => modalTitle = title;
 
             service.Show("Test", mockComponent.Object.GetType());
 
@@ -54,7 +54,7 @@ namespace Sparks.Components.Blazor.Tests.Components.Modal.Services
             Mock<ComponentBase> mockComponent = new Mock<ComponentBase>();
             ModalService service = new ModalService();
             RenderFragment modalRenderFragment = null;
-            service.Shown += (title, renderFragment) => modalRenderFragment = renderFragment;
+            service.Shown += (title, renderFragment, _, __) => modalRenderFragment = renderFragment;
 
             service.Show("Test", mockComponent.Object.GetType());
 
@@ -68,7 +68,7 @@ namespace Sparks.Components.Blazor.Tests.Components.Modal.Services
             bool eventCalled = false;
             service.Closed += (result) => eventCalled = true;
 
-            service.Close();
+            service.Cancel();
 
             eventCalled.Should().BeTrue();
         }
